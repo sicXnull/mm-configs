@@ -1,0 +1,63 @@
+version: '3.3'
+
+services:
+  piphi-db:
+    container_name: piphi-db
+    image: postgres:13.3
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=piphi31415
+      - POSTGRES_DB=postgres
+      - POSTGRES_NAME=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - piphi-db:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+    network_mode: bridge
+
+  software:
+    container_name: piphi-network-image
+    restart: always
+    image: sicnull/piphi-rock:latest
+    ports:
+      - '31415:31415'
+    depends_on:
+      - piphi-db
+    privileged: true
+    volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /var/run/dbus:/var/run/dbus
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    network_mode: bridge
+
+  watchtower:
+      image: containrrr/watchtower
+      container_name: piphi-watchtower
+      restart: always
+      command: --interval 21600 # 6hrs * 60 min * 60 sec
+      environment:
+        - WATCHTOWER_CLEANUP=true
+        - WATCHTOWER_LABEL_ENABLE=true
+        - WATCHTOWER_INCLUDE_RESTARTING=true
+      labels:
+        - "com.centurylinklabs.watchtower.enable=true"
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+      network_mode: bridge
+  
+  grafana:
+    container_name: piphi-grafana
+    image: grafana/grafana-oss
+    ports:
+      - "3000:3000"
+    volumes:
+      - /var/lib/grafana
+    restart: unless-stopped
+
+
+volumes:
+  piphi-db:
+    driver: local
