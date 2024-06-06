@@ -31,6 +31,19 @@ if [[ -z $NICKNAME || -z $EMAIL || -z $ETH_ADDRESS ]]; then
     exit 1
 fi
 
+if [ ! -x /usr/bin/docker-compose ]; then
+    echo "docker-compose not found. Installing..."
+    # Download docker-compose
+    sudo curl -L https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-$(uname -s)-$(uname -m) -o /usr/bin/docker-compose
+    # Set ownership to root
+    sudo chown root: /usr/bin/docker-compose
+    # Make it executable
+    sudo chmod +x /usr/bin/docker-compose
+    echo "docker-compose installed successfully."
+else
+    echo "docker-compose is already installed."
+fi
+
 # Create directories
 
 mkdir -p /data/anon/
