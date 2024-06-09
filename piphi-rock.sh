@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Download configuration files
-wget -O /data/piphi.yml https://raw.githubusercontent.com/sicXnull/mm-configs/main/piphi-rock.yml
+wget -O /data/piphi-rock.yml https://raw.githubusercontent.com/sicXnull/mm-configs/main/piphi-rock.yml
 
 # clear old containers
 docker stop piphi-network-image
