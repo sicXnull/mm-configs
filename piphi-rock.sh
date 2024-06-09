@@ -13,4 +13,4 @@ docker rm db
 docker rm grafana
 
 # Start Docker container
-docker-compose -f /data/piphi.yml up -d
+docker-compose -f /data/piphi-rock.yml up -d
