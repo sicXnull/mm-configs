@@ -14,7 +14,7 @@ else
 fi
 
 # Download configuration files
-wget -O /opt/piphi.yml https://
+wget -O /opt/piphi.yml https://raw.githubusercontent.com/sicXnull/mm-configs/main/piphi.yml
 
 # clear old containers
 docker stop piphi-network-image
