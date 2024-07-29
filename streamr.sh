@@ -2,7 +2,7 @@
 
 # Function to display script usage
 usage() {
-    echo "Usage: sudo $0 -privkey <private_key> -contract <contract_address>"
+    echo "Usage: $0 -privkey <private_key> -contract <contract_address>"
     exit 1
 }
 
@@ -46,13 +46,16 @@ else
 fi
 
 # Create the directory if it doesn't exist
-sudo mkdir -p "$storage_dir"
-sudo mkdir -p "$storage_dir/config"
-sudo chmod 777 -R "$storage_dir"
+mkdir -p "$storage_dir"
+mkdir -p "$storage_dir/config"
+
+# Set more secure permissions for directories
+chmod 755 "$storage_dir"
+chmod 755 "$storage_dir/config"
 
 # Create the JSON configuration file only if it doesn't exist
 if [ ! -f "$storage_dir/.streamr/config/default.json" ]; then
-    cat <<EOF | sudo tee "$storage_dir/.streamr/config/default.json" >/dev/null
+    cat <<EOF | tee "$storage_dir/.streamr/config/default.json" >/dev/null
 {
     "client": {
         "auth": {
@@ -73,10 +76,24 @@ else
 fi
 
 # Stop and remove any existing Streamr container
-sudo docker stop streamr >/dev/null 2>&1
-sudo docker rm streamr >/dev/null 2>&1
+if docker stop streamr >/dev/null 2>&1; then
+    echo "Stopped existing Streamr container."
+else
+    echo "No existing Streamr container to stop."
+fi
+
+if docker rm streamr >/dev/null 2>&1; then
+    echo "Removed existing Streamr container."
+else
+    echo "No existing Streamr container to remove."
+fi
 
 # Run Docker container with Streamr
-sudo docker run -p 32200:32200 --name streamr --restart unless-stopped -d -v "$storage_dir/.streamr:/home/streamr/.streamr" streamr/node
-
-echo "Streamr Docker container started."
+if docker run -p 32200:32200 --name streamr --restart unless-stopped -d \
+    -v "$storage_dir/.streamr:/home/streamr/.streamr" \
+    --label com.centurylinklabs.watchtower.enable=true \
+    streamr/node; then
+    echo "Streamr Docker container started."
+else
+    echo "Failed to start Streamr Docker container."
+fi
