@@ -58,7 +58,7 @@ if [ ! -f "$storage_dir/.streamr/config/default.json" ]; then
         "auth": {
             "privateKey": "$privkey"
         },
-        "environment": "polygonAmoy"
+        "environment": "polygon"
     },
     "plugins": {
         "operator": {
