@@ -17,7 +17,9 @@ docker rm myst
 docker run --restart always -d \
     --dns 1.1.1.1 --dns 1.0.0.1 --dns 8.8.8.8 --hostname myst --cap-add NET_ADMIN \
     -p 0.0.0.0:4449:4449 -p 0.0.0.0:56000-56100:56000-56100/udp -v /dev/net/tun:/dev/net/tun \
-    -v /data/myst:/var/lib/mysterium-node --name myst mysteriumnetwork/myst:latest \
+    -v /data/myst:/var/lib/mysterium-node --name myst \
+    --label com.centurylinklabs.watchtower.enable=true \
+    mysteriumnetwork/myst:latest \
     --vendor.id=crankk --udp.ports=56000:56100 service --agreed-terms-and-conditions
 
 # Check if the Docker container started successfully
