@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Check if the word "tun" exists in /etc/modules
-if ! grep -q "^tun$" /etc/modules; then
+if ! grep -q "^tun$" /data/etc/modules; then
     # Add /dev/tun module at boot
-    echo "tun" >> /etc/modules
-    echo "tun module added to /etc/modules"
+    echo "tun" >> /data/etc/modules
+    echo "tun module added to /data/etc/modules"
 else
-    echo "tun module already exists in /etc/modules"
+    echo "tun module already exists in data/etc/modules"
 fi
 
 # Check if /dev/net/tun exists
