@@ -18,17 +18,16 @@ while [[ $# -gt 0 ]]; do
 
     case $key in
         -privkey=*)
-        privkey="${key#*=}"
-        shift
-        ;;
+            privkey="${key#*=}"
+            ;;
         -contract=*)
-        contract="${key#*=}"
-        shift
-        ;;
+            contract="${key#*=}"
+            ;;
         *)
-        usage
-        ;;
+            usage
+            ;;
     esac
+    shift
 done
 
 # Check if required arguments are provided
@@ -44,18 +43,15 @@ else
 fi
 
 # Create the directory if it doesn't exist
-mkdir -p "$storage_dir"
-mkdir -p "$storage_dir/.streamr"
 mkdir -p "$storage_dir/.streamr/config"
 
-# Set more permissions for directories
-chmod 777 "$storage_dir"
-chmod 777 "$storage_dir/.streamr"
-chmod 777 "$storage_dir/.streamr/config"
+# Set permissions for directories
+chmod -R 777 "$storage_dir"
 
 # Create the JSON configuration file only if it doesn't exist
-if [ ! -f "$storage_dir/.streamr/config/default.json" ]; then
-    cat <<EOF | tee "$storage_dir/.streamr/config/default.json" >/dev/null
+config_file="$storage_dir/.streamr/config/default.json"
+if [ ! -f "$config_file" ]; then
+    cat <<EOF | tee "$config_file" >/dev/null
 {
     "client": {
         "auth": {
@@ -70,10 +66,13 @@ if [ ! -f "$storage_dir/.streamr/config/default.json" ]; then
     }
 }
 EOF
+
     echo "Configuration file 'default.json' created successfully."
 else
     echo "Configuration file 'default.json' already exists. Skipping creation."
 fi
+
+chmod 777 "$config_file"
 
 # Stop and remove any existing Streamr container
 if docker stop streamr >/dev/null 2>&1; then
