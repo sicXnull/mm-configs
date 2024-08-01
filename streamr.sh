@@ -53,6 +53,7 @@ config_file="$storage_dir/.streamr/config/default.json"
 if [ ! -f "$config_file" ]; then
     cat <<EOF | tee "$config_file" >/dev/null
 {
+    "\$schema": "https://schema.streamr.network/config-v3.schema.json",
     "client": {
         "auth": {
             "privateKey": "$privkey"
