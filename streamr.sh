@@ -2,7 +2,7 @@
 
 # Function to display script usage
 usage() {
-    echo "Usage: $0 -privkey <private_key> -contract <contract_address>"
+    echo "Usage: $0 -privkey=<private_key> -contract=<contract_address>"
     exit 1
 }
 
@@ -17,14 +17,12 @@ while [[ $# -gt 0 ]]; do
     key="$1"
 
     case $key in
-        -privkey)
-        privkey="$2"
-        shift
+        -privkey=*)
+        privkey="${key#*=}"
         shift
         ;;
-        -contract)
-        contract="$2"
-        shift
+        -contract=*)
+        contract="${key#*=}"
         shift
         ;;
         *)
