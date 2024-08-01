@@ -45,11 +45,13 @@ fi
 
 # Create the directory if it doesn't exist
 mkdir -p "$storage_dir"
-mkdir -p "$storage_dir/config"
+mkdir -p "$storage_dir/.streamr"
+mkdir -p "$storage_dir/.streamr/config"
 
 # Set more secure permissions for directories
 chmod 755 "$storage_dir"
-chmod 755 "$storage_dir/config"
+chmod 755 "$storage_dir/.streamr"
+chmod 755 "$storage_dir/.streamr/config"
 
 # Create the JSON configuration file only if it doesn't exist
 if [ ! -f "$storage_dir/.streamr/config/default.json" ]; then
