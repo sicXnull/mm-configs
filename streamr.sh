@@ -48,10 +48,9 @@ mkdir -p "$storage_dir/.streamr/config"
 # Set permissions for directories
 chmod -R 777 "$storage_dir"
 
-# Create the JSON configuration file only if it doesn't exist
+# Create or update the JSON configuration file
 config_file="$storage_dir/.streamr/config/default.json"
-if [ ! -f "$config_file" ]; then
-    cat <<EOF | tee "$config_file" >/dev/null
+cat <<EOF | tee "$config_file" >/dev/null
 {
     "\$schema": "https://schema.streamr.network/config-v3.schema.json",
     "client": {
@@ -68,11 +67,9 @@ if [ ! -f "$config_file" ]; then
 }
 EOF
 
-    echo "Configuration file 'default.json' created successfully."
-else
-    echo "Configuration file 'default.json' already exists. Skipping creation."
-fi
+echo "Configuration file 'default.json' created successfully."
 
+# Set permissions for the configuration file
 chmod 777 "$config_file"
 
 # Stop and remove any existing Streamr container
