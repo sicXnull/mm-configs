@@ -14,6 +14,7 @@ docker run -d --name earnapp \
     --restart always \
     -v earnapp-data:/etc/earnapp \
     --env EARNAPP_UUID=$EARNAPP_DEVICE_ID \
+    --label com.centurylinklabs.watchtower.enable=true \
     --network host \
     fazalfarhan01/earnapp:lite
 
