@@ -31,8 +31,8 @@ if [[ -z $NICKNAME || -z $EMAIL || -z $ETH_ADDRESS ]]; then
     exit 1
 fi
 
+chroot /host /bin/bash -x <<'EOF1'
 # Create directories
-
 mkdir -p /data/anon/
 mkdir -p /data/anon/etc/anon/
 mkdir -p /data/anon/run/anon/
@@ -50,10 +50,11 @@ chmod -R 777 /data/anon/etc/anon/notices.log
 wget -O /data/anon/relay.yaml https://raw.githubusercontent.com/sicXnull/anon-install/main/docker/anon-relay/relay.yaml
 wget -O /data/anon/etc/anon/anonrc https://raw.githubusercontent.com/sicXnull/anon-install/main/docker/anon-relay/anonrc
 wget -O /root/.nyx/config https://raw.githubusercontent.com/sicXnull/anon-install/main/docker/anon-relay/config
+EOF1
 
 # Create the content for the anonrc file
-cat <<EOF > /data/anon/etc/anon/anonrc
-User anond 
+cat <<EOF > /host/data/anon/etc/anon/anonrc
+User anond
 DataDirectory /var/lib/anon
 ControlSocket /run/anon/control
 ControlSocketsGroupWritable 1
@@ -65,13 +66,11 @@ ExitRelay 0
 Nickname $NICKNAME
 ContactInfo $EMAIL @anon:$ETH_ADDRESS
 EOF
-
 echo "anonrc file created successfully."
 
 # clear old containers
-
-docker stop anon-relay
-docker rm anon-relay
+chroot /host docker stop anon-relay
+chroot /host docker rm anon-relay
 
 # Start Docker container
-docker-compose -f /data/anon/relay.yaml up -d
+chroot /host docker-compose -f /data/anon/relay.yaml up -d
