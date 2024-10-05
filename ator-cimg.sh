@@ -73,6 +73,7 @@ CookieAuthFileGroupReadable 1
 Log notice file /etc/anon/notices.log
 ORPort 9001
 ExitRelay 0
+AgreeToTerms 1
 Nickname $NICKNAME
 ContactInfo $EMAIL @anon:$ETH_ADDRESS
 EOF
