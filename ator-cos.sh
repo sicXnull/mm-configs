@@ -47,7 +47,7 @@ chown -R 100:101 /data/anon/run/anon/
 chmod -R 777 /data/anon/etc/anon/notices.log
 
 # Download configuration files
-wget -O /data/anon/relay.yaml https://raw.githubusercontent.com/sicXnull/anon-install/main/docker/anon-relay/relay.yaml
+wget -O /data/anon/relay.yaml https://raw.githubusercontent.com/sicXnull/anon-install/main/docker/anon-relay/anon-relay.yaml
 wget -O /data/anon/etc/anon/anonrc https://raw.githubusercontent.com/sicXnull/anon-install/main/docker/anon-relay/anonrc
 wget -O /root/.nyx/config https://raw.githubusercontent.com/sicXnull/anon-install/main/docker/anon-relay/config
 EOF1
@@ -63,6 +63,7 @@ CookieAuthFile /run/anon/control.authcookie
 CookieAuthFileGroupReadable 1
 ORPort 9001
 ExitRelay 0
+AgreeToTerms 1
 Nickname $NICKNAME
 ContactInfo $EMAIL @anon:$ETH_ADDRESS
 EOF
