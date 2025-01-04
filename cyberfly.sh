@@ -98,7 +98,7 @@ services:
 EOF"
 
 # Start the container
-chroot /host sudo docker-compose -f "$DATA_PATH/docker-compose.yml" up -d
+chroot /host docker-compose -f "$DATA_PATH/docker-compose.yml" up -d
 
 # Notify user
 echo "docker-compose.yml has been generated containers started succesfully in $DATA_PATH."
