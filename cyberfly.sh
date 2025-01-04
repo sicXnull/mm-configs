@@ -69,7 +69,7 @@ services:
     volumes:
       - ${DATA_PATH}/data:/usr/src/app/data
     environment:
-      - KADENA_ACCOUNT=${KADENA_ACCOUNT}
+      - KADENA_ACCOUNT=k:${KADENA_ACCOUNT}
       - NODE_PRIV_KEY=${NODE_PRIV_KEY}
       - MQTT_HOST=mqtt://cyberflymqtt
       - REDIS_HOST=redisstackserver
