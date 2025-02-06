@@ -45,7 +45,7 @@ fi
 mkdir -p "$DATA_PATH"
 
 # Generate docker-compose.yml
-chroot /host bash -c "cat <<EOF > \"$DATA_PATH/docker-compose.yml\"
+bash -c "cat <<EOF > \"$DATA_PATH/docker-compose.yml\"
 version: '3.8'
 
 networks:
