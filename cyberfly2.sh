@@ -45,17 +45,22 @@ fi
 mkdir -p "$DATA_PATH"
 
 # Generate docker-compose.yml
-bash -c "cat <<EOF > \"$DATA_PATH/docker-compose.yml\"
+chroot /host bash -c "cat <<EOF > \"$DATA_PATH/docker-compose.yml\"
 version: '3.8'
+
+networks:
+  cyberfly_network:
 
 services:
   cyberflynodeui:
     image: \"cyberfly/cyberfly_node_ui:latest\"
     restart: always
     ports:
-      - \"31000:80\" #nginx server port
+      - \"31000:80\" # nginx server port
     depends_on:
       - cyberflynode
+    networks:
+      - cyberfly_network
     labels:
       - \"com.centurylinklabs.watchtower.enable=true\"
 
@@ -63,9 +68,9 @@ services:
     image: \"cyberfly/cyberfly_node:latest\"
     restart: always
     ports:
-      - \"31001:31001\" #libp2p tcp port
-      - \"31002:31002\" #libp2p websocket port
-      - \"31003:31003\" #Cyberfly api port
+      - \"31001:31001\" # libp2p tcp port
+      - \"31002:31002\" # libp2p websocket port
+      - \"31003:31003\" # Cyberfly API port
     volumes:
       - ${DATA_PATH}/data:/usr/src/app/data
     environment:
@@ -76,6 +81,8 @@ services:
     depends_on:
       - cyberflymqtt
       - redisstackserver
+    networks:
+      - cyberfly_network
     labels:
       - \"com.centurylinklabs.watchtower.enable=true\"
 
@@ -83,8 +90,10 @@ services:
     image: \"cyberfly/cyberfly_mqtt:latest\"
     restart: always
     ports:
-      - \"31004:1883\" #mqtt tcp port
-      - \"31005:9001\" #mqtt websocket port
+      - \"31004:1883\" # mqtt tcp port
+      - \"31005:9001\" # mqtt websocket port
+    networks:
+      - cyberfly_network
     labels:
       - \"com.centurylinklabs.watchtower.enable=true\"
 
@@ -93,6 +102,8 @@ services:
     restart: always
     volumes:
       - ${DATA_PATH}/redis-data:/data
+    networks:
+      - cyberfly_network
     labels:
       - \"com.centurylinklabs.watchtower.enable=true\"
 EOF"
